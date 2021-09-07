@@ -51,20 +51,27 @@ class MainActivity : AppCompatActivity() {
             buttonLookBusy.alpha = 0f
             buttonSelfDestruct.alpha = 0f
             lookBusyText.alpha = 1f
-            lookBusyBar.alpha = 1F
+            lookBusyBar.alpha = 1f
             var lastValue = 0
             var thisValue = 0
+            var sec = 7300/1000
             lookBusyText.text = "Loading Assets: $thisValue/100"
+
+            switchUseless.isEnabled = false
+            buttonSelfDestruct.isEnabled = false
+            buttonLookBusy.isEnabled = false
+
             val uselessTimer = object : CountDownTimer(7300, 70) {
                 //busyIsRunning = true
                 override fun onTick(millisUntilFinished: Long) {
                     if(lastValue < 99) {
+                        sec = (millisUntilFinished/1000).toInt() + 1
                         thisValue = lastValue + 1
-                        lookBusyText.text = "Loading Assets: $thisValue/100"
+                        lookBusyText.text = "Loading Assets: $thisValue/100 ($sec seconds remaining)"
                         lookBusyBar.progress = thisValue
                         lastValue++
                     } else{
-                        lookBusyText.text = "Loading Assets: 100/100"
+                        lookBusyText.text = "Loading Assets: 100/100 ($sec seconds remaining)"
                     }
                 }
 
@@ -77,6 +84,9 @@ class MainActivity : AppCompatActivity() {
                     buttonSelfDestruct.isActivated = false
                     lookBusyText.alpha = 0f
                     lookBusyBar.alpha = 0F
+                    switchUseless.isEnabled = true
+                    buttonSelfDestruct.isEnabled = true
+                    buttonLookBusy.isEnabled = true
                 }
 
             }
@@ -92,13 +102,14 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onFinish() {
-                    // turn the switch off
                     switchUseless.isChecked = false
                 }
 
             }
             uselessTimer.start()
         }
+
+
 
         private fun startButtonTimer() {
 
